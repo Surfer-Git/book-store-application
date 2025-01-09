@@ -9,5 +9,10 @@ import org.springframework.context.annotation.Import;
 class CatalogueServiceApplicationTests {
 
     @Test
-    void contextLoads() {}
+    void contextLoads() {
+        System.out.println("Testing GitHub Actions!");
+    }
+
+    @Test
+    void changeToTestGitHubAction(){}
 }
