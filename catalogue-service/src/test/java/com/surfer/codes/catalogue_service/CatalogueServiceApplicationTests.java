@@ -14,5 +14,5 @@ class CatalogueServiceApplicationTests {
     }
 
     @Test
-    void changeToTestGitHubAction(){}
+    void changeToTestGitHubAction() {}
 }
