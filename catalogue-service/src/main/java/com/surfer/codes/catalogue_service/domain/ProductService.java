@@ -20,7 +20,7 @@ public class ProductService {
         this.properties = applicationProperties;
     }
 
-    public PagedResult<Product> getProducts(int pageNo){
+    public PagedResult<Product> getProducts(int pageNo) {
         Sort sort = Sort.by("name").ascending();
         pageNo = pageNo <= 1 ? 0 : (pageNo - 1); // 1based idx to 0based idx
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
@@ -28,7 +28,7 @@ public class ProductService {
         return getProductPagedResult(products);
     }
 
-    private PagedResult<Product> getProductPagedResult(Page<ProductEntity> productEntityPage){
+    private PagedResult<Product> getProductPagedResult(Page<ProductEntity> productEntityPage) {
         return new PagedResult<>(
                 productEntityPage.getContent().stream().map(this::mapToProduct).toList(),
                 productEntityPage.getTotalElements(),
@@ -37,17 +37,15 @@ public class ProductService {
                 productEntityPage.isFirst(),
                 productEntityPage.isLast(),
                 productEntityPage.hasNext(),
-                productEntityPage.hasPrevious()
-        );
+                productEntityPage.hasPrevious());
     }
 
-    private Product mapToProduct (ProductEntity productEntity){
+    private Product mapToProduct(ProductEntity productEntity) {
         return new Product(
                 productEntity.getName(),
                 productEntity.getCode(),
                 productEntity.getDescription(),
                 productEntity.getImageUrl(),
-                productEntity.getPrice()
-        );
+                productEntity.getPrice());
     }
 }

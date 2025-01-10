@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 class ProductEntity {
 
     @Id
@@ -34,8 +34,7 @@ class ProductEntity {
     private String description;
     private String imageUrl;
 
-    @NotNull(message = "product price is required")
-    @DecimalMin("0.1")
+    @NotNull(message = "product price is required") @DecimalMin("0.1")
     @Column(nullable = false)
     private BigDecimal price;
 }

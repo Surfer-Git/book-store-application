@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/products")
 class ProductController {
@@ -21,8 +19,7 @@ class ProductController {
     }
 
     @GetMapping
-    PagedResult<Product> getProducts(@RequestParam(name = "page", defaultValue = "1") Integer pageNo){
+    PagedResult<Product> getProducts(@RequestParam(name = "page", defaultValue = "1") Integer pageNo) {
         return productService.getProducts(pageNo);
     }
-
 }
