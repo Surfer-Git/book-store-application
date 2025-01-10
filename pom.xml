@@ -21,7 +21,6 @@
         <module>catalogue-service</module>
     </modules>
 
-
     <build>
         <plugins>
             <plugin>
