@@ -2,6 +2,7 @@ package com.surfer.codes.catalogue_service.domain;
 
 import com.surfer.codes.catalogue_service.ApplicationProperties;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,11 @@ public class ProductService {
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
         Page<ProductEntity> products = productRepository.findAll(pageable);
         return getProductPagedResult(products);
+    }
+
+    public Optional<Product> getProductByCode(String code) {
+        Optional<ProductEntity> productEntity = productRepository.findByCode(code);
+        return productEntity.map(this::mapToProduct);
     }
 
     private PagedResult<Product> getProductPagedResult(Page<ProductEntity> productEntityPage) {
