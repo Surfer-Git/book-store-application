@@ -32,7 +32,7 @@ public class ProductService {
         return new PagedResult<>(
                 productEntityPage.getContent().stream().map(this::mapToProduct).toList(),
                 productEntityPage.getTotalElements(),
-                productEntityPage.getNumber(),
+                productEntityPage.getNumber() + 1,
                 productEntityPage.getTotalPages(),
                 productEntityPage.isFirst(),
                 productEntityPage.isLast(),
