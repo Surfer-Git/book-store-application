@@ -6,6 +6,6 @@ class CatalogueServiceApplicationTests extends AbstractIT {
 
     @Test
     void contextLoads() {
-        System.out.println("Testing GitHub Actions!");
+        System.out.println("Testing Github workflow for dockerhub publish!");
     }
 }
