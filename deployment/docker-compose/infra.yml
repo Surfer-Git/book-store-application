@@ -42,11 +42,12 @@ services:
     image: rabbitmq:4.0.5
     container_name: bookstore-rabbitmq
     environment:
-      - DEFAULT_USER=guest
-      - DEFAULT_PASSWORD=guest
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - "5672:5672"
       - "15672:15672"
+    command: /bin/sh -c "rabbitmq-plugins enable --offline rabbitmq_management && rabbitmq-server"
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity
       interval: 30s
