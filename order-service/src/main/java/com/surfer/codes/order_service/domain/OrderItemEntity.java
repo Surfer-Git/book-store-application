@@ -3,6 +3,7 @@ package com.surfer.codes.order_service.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +27,7 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private String name;
 
-    @NotBlank
-    @Column(nullable = false)
+    @NotNull @Column(nullable = false)
     private BigDecimal price;
 
     @Column(nullable = false)

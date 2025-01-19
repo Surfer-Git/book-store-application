@@ -6,7 +6,9 @@ import com.surfer.codes.order_service.domain.models.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +33,7 @@ class OrderEntity {
     @AttributeOverrides({
         @AttributeOverride(name = "name", column = @Column(name = "customer_name")),
         @AttributeOverride(name = "email", column = @Column(name = "customer_email")),
-        @AttributeOverride(name = "p[hone", column = @Column(name = "phone"))
+        @AttributeOverride(name = "phone", column = @Column(name = "customer_phone"))
     })
     private Customer customer;
 
@@ -39,10 +41,10 @@ class OrderEntity {
     @AttributeOverrides({
         @AttributeOverride(name = "addressLine1", column = @Column(name = "delivery_address_line1")),
         @AttributeOverride(name = "addressLine2", column = @Column(name = "delivery_address_line2")),
-        @AttributeOverride(name = "city", column = @Column(name = "delivery_city")),
-        @AttributeOverride(name = "state", column = @Column(name = "delivery_state")),
-        @AttributeOverride(name = "zipCode", column = @Column(name = "delivery_zip_code")),
-        @AttributeOverride(name = "country", column = @Column(name = "delivery_country")),
+        @AttributeOverride(name = "city", column = @Column(name = "delivery_address_city")),
+        @AttributeOverride(name = "state", column = @Column(name = "delivery_address_state")),
+        @AttributeOverride(name = "zipCode", column = @Column(name = "delivery_address_zip_code")),
+        @AttributeOverride(name = "country", column = @Column(name = "delivery_address_country"))
     })
     private Address deliveryAddress;
 
@@ -58,5 +60,16 @@ class OrderEntity {
     private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @Setter(AccessLevel.NONE)
     private Set<OrderItemEntity> orderItems;
+
+    public void setOrderItems(Set<OrderItemEntity> items) {
+        if (this.orderItems == null) {
+            this.orderItems = new HashSet<>();
+        }
+        for (var item : items) {
+            this.orderItems.add(item);
+            item.setOrder(this);
+        }
+    }
 }
