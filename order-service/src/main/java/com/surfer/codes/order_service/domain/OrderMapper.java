@@ -14,7 +14,7 @@ public abstract class OrderMapper {
     @Autowired
     public SecurityService securityService;
 
-    @Mapping(target = "id", ignore = true)
+    //    @Mapping(target = "id", ignore = true)
     //    @Mapping(target = "username", expression = "java(securityService.getLoggedInUserName())")
     @Mapping(target = "orderItems", source = "items")
     //    @Mapping(target = "orderStatus", constant = "java(getNewOrderStatus())")

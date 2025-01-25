@@ -14,12 +14,17 @@ import org.springframework.stereotype.Service;
 public class OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository orderRepository;
+    private final OrderValidator orderValidator;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderValidator orderValidator) {
         this.orderRepository = orderRepository;
+        this.orderValidator = orderValidator;
     }
 
     public CreateOrderResponse createOrder(String userName, CreateOrderRequest request) {
+        // validation from catalogue service side
+        orderValidator.validate(request);
+
         OrderEntity newOrder = OrderMapper.INSTANCE.createOrderRequestToOrderEntity(request);
         newOrder.setUserName(userName);
         newOrder.setOrderNumber(UUID.randomUUID().toString());
