@@ -2,7 +2,7 @@ package com.surfer.codes.order_service.client;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +17,13 @@ public class CatalogueServiceClient {
     @Autowired
     RestClient catalogueRestClient;
 
+    @Retry(name = "catalogue-service")
     public Optional<Product> getProductByCode(String code) {
-        Product product = null;
-        try{
-            product = catalogueRestClient
-                    .get()
-                    .uri("/api/products/{code}", code)
-                    .retrieve()
-                    .body(Product.class);
-        }
-        catch (Exception e){
-            log.error("Error from catalogue: {}", ExceptionUtils.getStackTrace(e));
-        }
+        Product product = catalogueRestClient
+                .get()
+                .uri("/api/products/{code}", code)
+                .retrieve()
+                .body(Product.class);
         return Optional.ofNullable(product);
     }
 }

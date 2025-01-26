@@ -1,9 +1,11 @@
 package com.surfer.codes.order_service.client;
 
 import com.surfer.codes.order_service.ApplicationProperties;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 @Configuration
@@ -14,8 +16,13 @@ public class CatalogueServiceClientConfig {
 
     @Bean
     public RestClient catlogueRestClient() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(Duration.ofMillis(500));
+        factory.setReadTimeout(Duration.ofMillis(500));
+
         return RestClient.builder()
                 .baseUrl(applicationProperties.catalogueServiceUrl())
+                .requestFactory(factory)
                 .build();
     }
 }
