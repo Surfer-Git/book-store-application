@@ -1,7 +1,6 @@
 package com.surfer.codes.order_service.client;
 
 import java.util.Optional;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +18,13 @@ public class CatalogueServiceClient {
 
     public Optional<Product> getProductByCode(String code) {
         Product product = null;
-        try{
+        try {
             product = catalogueRestClient
                     .get()
                     .uri("/api/products/{code}", code)
                     .retrieve()
                     .body(Product.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.error("Error from catalogue: {}", ExceptionUtils.getStackTrace(e));
         }
         return Optional.ofNullable(product);
