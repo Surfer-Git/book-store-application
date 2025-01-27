@@ -1,8 +1,8 @@
 package com.surfer.codes.order_service.client;
 
-import java.util.Optional;
-
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,10 @@ public class CatalogueServiceClient {
     @Autowired
     RestClient catalogueRestClient;
 
+    @CircuitBreaker(name = "catalogue-service")
     @Retry(name = "catalogue-service")
     public Optional<Product> getProductByCode(String code) {
+        log.info("Fetching product for code : {}", code);
         Product product = catalogueRestClient
                 .get()
                 .uri("/api/products/{code}", code)
