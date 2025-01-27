@@ -14,13 +14,13 @@ public abstract class OrderMapper {
     @Autowired
     public SecurityService securityService;
 
-    //    @Mapping(target = "id", ignore = true)
+    //        @Mapping(target = "id", ignore = true)
     //    @Mapping(target = "username", expression = "java(securityService.getLoggedInUserName())")
     @Mapping(target = "orderItems", source = "items")
     //    @Mapping(target = "orderStatus", constant = "java(getNewOrderStatus())")
     //    @Mapping(target = "orderNumber", expression = "java(java.util.UUID.randomUUID().toString())")
     public abstract OrderEntity createOrderRequestToOrderEntity(CreateOrderRequest request);
 
-    @Mapping(target = "id", ignore = true)
+    //    @Mapping(target = "id", ignore = true)
     public abstract OrderItemEntity orderItemEntityToOrderItem(OrderItem orderItem);
 }
