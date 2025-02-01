@@ -1,26 +1,50 @@
 package com.surfer.codes.order_service.domain;
 
-import com.surfer.codes.order_service.domain.models.CreateOrderRequest;
-import com.surfer.codes.order_service.domain.models.OrderItem;
+import com.surfer.codes.order_service.domain.models.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrderMapper {
     public static OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     @Autowired
     public SecurityService securityService;
 
-    //        @Mapping(target = "id", ignore = true)
-    //    @Mapping(target = "username", expression = "java(securityService.getLoggedInUserName())")
     @Mapping(target = "orderItems", source = "items")
-    //    @Mapping(target = "orderStatus", constant = "java(getNewOrderStatus())")
-    //    @Mapping(target = "orderNumber", expression = "java(java.util.UUID.randomUUID().toString())")
     public abstract OrderEntity createOrderRequestToOrderEntity(CreateOrderRequest request);
 
-    //    @Mapping(target = "id", ignore = true)
-    public abstract OrderItemEntity orderItemEntityToOrderItem(OrderItem orderItem);
+    public abstract OrderItemEntity orderItemToOrderItemEntity(OrderItem orderItem);
+
+    public abstract OrderItem orderItemEntityToOrderItem(OrderItemEntity orderItemEntity);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_CREATED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    public abstract CreateOrderEvent buildCreateOrderEvent(OrderEntity orderEntity);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_DELIVERED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    public abstract DeliveredOrderEvent buildDeliveredOrderEvent(OrderEntity orderEntity);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_CANCELLED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    @Mapping(target = "reason", source = "reason")
+    public abstract CancelledOrderEvent buildCancelledOrderEvent(OrderEntity orderEntity, String reason);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_PROCESSING_FAILED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    public abstract ErrorOrderEvent buildErrorOrderEvent(OrderEntity orderEntity);
+
+    public static LocalDateTime getLocalDateTime() {
+        return LocalDateTime.now();
+    }
+
+    public static String getRandomUUIDstring() {
+        return UUID.randomUUID().toString();
+    }
 }

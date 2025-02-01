@@ -17,8 +17,8 @@ public class CatalogueServiceClientConfig {
     @Bean
     public RestClient catlogueRestClient() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofMillis(500));
-        factory.setReadTimeout(Duration.ofMillis(500));
+        factory.setConnectTimeout(Duration.ofSeconds(5));
+        factory.setReadTimeout(Duration.ofSeconds(5));
 
         return RestClient.builder()
                 .baseUrl(applicationProperties.catalogueServiceUrl())
