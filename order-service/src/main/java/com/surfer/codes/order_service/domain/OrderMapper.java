@@ -1,8 +1,6 @@
 package com.surfer.codes.order_service.domain;
 
-import com.surfer.codes.order_service.domain.models.CreateOrderEvent;
-import com.surfer.codes.order_service.domain.models.CreateOrderRequest;
-import com.surfer.codes.order_service.domain.models.OrderItem;
+import com.surfer.codes.order_service.domain.models.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.mapstruct.Mapper;
@@ -26,9 +24,21 @@ public abstract class OrderMapper {
     public abstract OrderItem orderItemEntityToOrderItem(OrderItemEntity orderItemEntity);
 
     @Mapping(target = "orderEventType", constant = "ORDER_CREATED")
-    @Mapping(target = "createdAt", expression = "java(getLocalDateTime())")
     @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
     public abstract CreateOrderEvent buildCreateOrderEvent(OrderEntity orderEntity);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_DELIVERED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    public abstract DeliveredOrderEvent buildDeliveredOrderEvent(OrderEntity orderEntity);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_CANCELLED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    @Mapping(target = "reason", source = "reason")
+    public abstract CancelledOrderEvent buildCancelledOrderEvent(OrderEntity orderEntity, String reason);
+
+    @Mapping(target = "orderEventType", constant = "ORDER_PROCESSING_FAILED")
+    @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
+    public abstract ErrorOrderEvent buildErrorOrderEvent(OrderEntity orderEntity);
 
     public static LocalDateTime getLocalDateTime() {
         return LocalDateTime.now();
