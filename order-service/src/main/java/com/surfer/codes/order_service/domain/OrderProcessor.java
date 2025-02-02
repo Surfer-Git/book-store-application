@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,13 @@ public class OrderProcessor {
     @Autowired
     OrderEventService orderEventService;
 
-    @Scheduled(cron = "10 * * * * *") // every 10 sec
+    @Scheduled(cron = "${orders-processing.cron}") // every 15-sec
+    @SchedulerLock(name = "processNewOrders", lockAtMostFor = "10m")
     void processNewOrders() {
+        log.info("Processing of New Orders, STARTED");
         List<OrderEntity> orderList = orderRepository.getOrderByStatus(OrderStatus.NEW);
         orderList.forEach(this::process);
+        log.info("Processing of New Orders, COMPLETED");
     }
 
     @Transactional

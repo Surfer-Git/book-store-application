@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.surfer.codes.order_service.domain.models.*;
 import java.util.List;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +66,17 @@ public class OrderEventService {
         orderEventRepository.save(orderEventEntity);
     }
 
-    @Scheduled(cron = "5 * * * * *") // every 5-sec
+    @Scheduled(cron = "${order-events-publisher.cron}") // every 30-sec
+    @SchedulerLock(name = "publishOrderEvents")
     void publishOrderEvents() {
         Sort sort = Sort.by(Sort.Order.asc("createdAt"));
         List<OrderEventEntity> orderEvents = orderEventRepository.findAll(sort);
+        log.info("Publishing of Orders Events, STARTED");
         orderEvents.forEach(event -> {
             publish(event);
             orderEventRepository.delete(event);
         });
+        log.info("Publishing of Orders Events, COMPLETED");
     }
 
     void publish(OrderEventEntity orderEventEntity) {
@@ -91,13 +95,13 @@ public class OrderEventService {
                 orderEventPublisher.publish(deliveredOrderEvent);
                 break;
 
-            case ORDER_CANCELLED:
+            case OrderEventType.ORDER_CANCELLED:
                 CancelledOrderEvent cancelledOrderEvent =
                         readJsonPayload(orderEventEntity.getPayload(), CancelledOrderEvent.class);
                 orderEventPublisher.publish(cancelledOrderEvent);
                 break;
 
-            case ORDER_PROCESSING_FAILED:
+            case OrderEventType.ORDER_PROCESSING_FAILED:
                 ErrorOrderEvent errorOrderEvent = readJsonPayload(orderEventEntity.getPayload(), ErrorOrderEvent.class);
                 orderEventPublisher.publish(errorOrderEvent);
                 break;
