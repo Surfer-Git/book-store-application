@@ -71,12 +71,12 @@ public class OrderEventService {
     void publishOrderEvents() {
         Sort sort = Sort.by(Sort.Order.asc("createdAt"));
         List<OrderEventEntity> orderEvents = orderEventRepository.findAll(sort);
-        log.info("Publishing of Orders Events, STARTED");
+        //        log.info("Publishing of Orders Events, STARTED");
         orderEvents.forEach(event -> {
             publish(event);
             orderEventRepository.delete(event);
         });
-        log.info("Publishing of Orders Events, COMPLETED");
+        //        log.info("Publishing of Orders Events, COMPLETED");
     }
 
     void publish(OrderEventEntity orderEventEntity) {

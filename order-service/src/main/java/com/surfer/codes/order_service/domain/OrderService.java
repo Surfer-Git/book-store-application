@@ -2,6 +2,8 @@ package com.surfer.codes.order_service.domain;
 
 import com.surfer.codes.order_service.domain.models.*;
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,5 +46,14 @@ public class OrderService {
 
         log.info("Created Order with order-number : {}", savedOrder.getOrderNumber());
         return new CreateOrderResponse(savedOrder.getOrderNumber());
+    }
+
+    public List<OrderSummary> getOrdersList(String userName) {
+        return orderRepository.getOrderByUserName(userName);
+    }
+
+    public Optional<OrderDetailsResponse> getOrderDetails(String userName, String orderNumber) {
+        Optional<OrderEntity> order = orderRepository.getOrderByUserNameAndOrderNumber(userName, orderNumber);
+        return order.map(orderMapper::mapToOrderDetailsResponse);
     }
 }

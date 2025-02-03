@@ -1,6 +1,7 @@
 package com.surfer.codes.order_service.domain;
 
 import com.surfer.codes.order_service.domain.models.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.mapstruct.Mapper;
@@ -39,6 +40,15 @@ public abstract class OrderMapper {
     @Mapping(target = "orderEventType", constant = "ORDER_PROCESSING_FAILED")
     @Mapping(target = "eventId", expression = "java(getRandomUUIDstring())")
     public abstract ErrorOrderEvent buildErrorOrderEvent(OrderEntity orderEntity);
+
+    @Mapping(target = "totalAmount", expression = "java(calculateOrderCost(orderEntity))")
+    public abstract OrderDetailsResponse mapToOrderDetailsResponse(OrderEntity orderEntity);
+
+    public BigDecimal calculateOrderCost(OrderEntity order) {
+        return order.getOrderItems().stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
     public static LocalDateTime getLocalDateTime() {
         return LocalDateTime.now();
