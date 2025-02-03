@@ -31,10 +31,10 @@ public class OrderProcessor {
     @Scheduled(cron = "${orders-processing.cron}") // every 15-sec
     @SchedulerLock(name = "processNewOrders", lockAtMostFor = "10m")
     void processNewOrders() {
-        log.info("Processing of New Orders, STARTED");
+        //        log.info("Processing of New Orders, STARTED");
         List<OrderEntity> orderList = orderRepository.getOrderByStatus(OrderStatus.NEW);
         orderList.forEach(this::process);
-        log.info("Processing of New Orders, COMPLETED");
+        //        log.info("Processing of New Orders, COMPLETED");
     }
 
     @Transactional
