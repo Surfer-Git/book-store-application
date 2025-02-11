@@ -31,6 +31,7 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
+      - CATALOGUE_SERVICE_URL=http://catalogue-service:8081
     ports:
       - "8082:8082"
     restart: unless-stopped
