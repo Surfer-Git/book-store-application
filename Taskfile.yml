@@ -20,6 +20,8 @@ tasks:
     cmds:
       - "{{.MVNW}} -pl catalogue-service spring-boot:build-image -DskipTests"  # mvn-lifecycle + docker compose (excluding test phase)
       - "{{.MVNW}} -pl order-service spring-boot:build-image -DskipTests"
+      - "{{.MVNW}} -pl notification-service spring-boot:build-image -DskipTests"
+      - "{{.MVNW}} -pl api_gateway spring-boot:build-image -DskipTests"
   start_infra:
     cmds:
       - docker compose -f "{{.INFRA_DC_FILE}}" up -d

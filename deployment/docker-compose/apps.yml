@@ -31,7 +31,7 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
-      - CATALOGUE_SERVICE_URL=http://catalogue-service:8081
+      - CATALOGUE_SERVICE_URL=http://api_gateway:8989/catlogue
     ports:
       - "8082:8082"
     restart: unless-stopped
@@ -71,6 +71,21 @@ services:
         condition: service_healthy
       mailhog:
         condition: service_started
+
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  api_gateway:
+    image: surfergit/bookstore-api_gateway
+    container_name: api_gateway
+    environment:
+      - ORDER_SERVICE_URL=http://order-service:8082
+      - CATALOGUE_SERVICE_URL=http://catalogue-service:8081
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
 
     deploy:
       resources:
