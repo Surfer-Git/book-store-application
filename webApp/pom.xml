@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.surfer.codes</groupId>
-	<artifactId>webApp</artifactId>
+	<artifactId>web-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>webApp</name>
 	<description>web application for bookstore</description>
