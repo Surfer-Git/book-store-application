@@ -1,6 +1,7 @@
 package com.surfer.codes.webApp.web.controllers;
 
 import com.surfer.codes.webApp.clients.orders.*;
+import com.surfer.codes.webApp.services.SecurityHelper;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     private final OrderServiceClient orderServiceClient;
-    //    private final SecurityHelper securityHelper;
+    private final SecurityHelper securityHelper;
 
-    OrderController(OrderServiceClient orderServiceClient) {
+    OrderController(OrderServiceClient orderServiceClient, SecurityHelper securityHelper) {
         this.orderServiceClient = orderServiceClient;
-        //        this.securityHelper = securityHelper;
+        this.securityHelper = securityHelper;
     }
 
     @GetMapping("/cart")
@@ -59,8 +60,7 @@ class OrderController {
     }
 
     private Map<String, ?> getHeaders() {
-        return null;
-        //        String accessToken = securityHelper.getAccessToken();
-        //        return Map.of("Authorization", "Bearer " + accessToken);
+        String accessToken = securityHelper.getAccessToken();
+        return Map.of("Authorization", "Bearer " + accessToken);
     }
 }
