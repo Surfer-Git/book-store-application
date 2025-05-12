@@ -32,6 +32,7 @@ services:
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
       - CATALOGUE_SERVICE_URL=http://api_gateway:8989/catlogue
+      - OAUTH2_SERVER_URL=http://keycloak:9191
     ports:
       - "8082:8082"
     restart: unless-stopped
@@ -92,26 +93,21 @@ services:
         limits:
           memory: 700m
 
-#  bookstore-webapp:
-#    image: surfergit/bookstore-web-app
-#    container_name: bookstore-web-app
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - BOOKSTORE_API_GATEWAY_URL=http://api-gateway:8989
-#      - OAUTH2_SERVER_URL=http://keycloak:9191
-#      - MANAGEMENT_TRACING_ENABLED=true
-#      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      api_gateway:
-#        condition: service_started
-#      catalogue-service:
-#        condition: service_started
-#    restart: unless-stopped
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 700m
-#    labels:
-#      logging: "promtail"
+  bookstore-webapp:
+    image: surfergit/bookstore-web-app
+    container_name: bookstore-web-app
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - BOOKSTORE_API_GATEWAY_URL=http://api_gateway:8989
+      - OAUTH2_SERVER_URL=http://keycloak:9191
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    labels:
+      logging: "promtail"
