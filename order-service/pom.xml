@@ -166,6 +166,11 @@
 			<artifactId>shedlock-provider-jdbc-template</artifactId>
 			<version>6.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<version>1.14.6</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

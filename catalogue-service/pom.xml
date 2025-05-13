@@ -121,6 +121,11 @@
 			<version>1.18.36</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<version>1.14.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>
