@@ -19,6 +19,8 @@ services:
       resources:
         limits:
           memory: 700m
+    labels:
+      collect_logs_loki: "true"
 
   order-service:
     image: surfergit/bookstore-order-service
@@ -42,6 +44,9 @@ services:
         condition: service_healthy
       bookstore-rabbitmq:
         condition: service_healthy
+
+    labels:
+      collect_logs_loki: "true"
 
     deploy:
       resources:
@@ -72,6 +77,9 @@ services:
         condition: service_healthy
       mailhog:
         condition: service_started
+
+    labels:
+      collect_logs_loki: "true"
 
     deploy:
       resources:
@@ -110,4 +118,4 @@ services:
         limits:
           memory: 700m
     labels:
-      logging: "promtail"
+      collect_logs_loki: "true"

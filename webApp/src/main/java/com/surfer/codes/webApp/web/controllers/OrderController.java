@@ -24,13 +24,14 @@ class OrderController {
 
     @GetMapping("/cart")
     String cart() {
+        log.info("Controller call to cart");
         return "cart";
     }
 
     @PostMapping("/api/orders")
     @ResponseBody
     OrderConfirmationDTO createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
-        log.info("Creating order: {}", orderRequest);
+        log.info("Controller call to createOrder: {}", orderRequest);
         return orderServiceClient.createOrder(getHeaders(), orderRequest);
     }
 
@@ -55,7 +56,7 @@ class OrderController {
     @GetMapping("/api/orders")
     @ResponseBody
     List<OrderSummary> getOrders() {
-        log.info("Fetching orders");
+        log.info("Controller call to get all orders");
         return orderServiceClient.getOrders(getHeaders());
     }
 
