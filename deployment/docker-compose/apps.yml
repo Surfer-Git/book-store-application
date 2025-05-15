@@ -20,7 +20,7 @@ services:
         limits:
           memory: 700m
     labels:
-      collect_logs_loki: "true"
+      logging: "promtail"
 
   order-service:
     image: surfergit/bookstore-order-service
@@ -46,7 +46,7 @@ services:
         condition: service_healthy
 
     labels:
-      collect_logs_loki: "true"
+      logging: "promtail"
 
     deploy:
       resources:
@@ -79,7 +79,7 @@ services:
         condition: service_started
 
     labels:
-      collect_logs_loki: "true"
+      logging: "promtail"
 
     deploy:
       resources:
@@ -118,4 +118,4 @@ services:
         limits:
           memory: 700m
     labels:
-      collect_logs_loki: "true"
+      logging: "promtail"

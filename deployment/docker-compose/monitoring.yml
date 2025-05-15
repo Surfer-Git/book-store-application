@@ -1,4 +1,8 @@
 name: 'book-store-application'
+
+volumes:
+  grafana_data:
+
 services:
   prometheus:
     image: prom/prometheus:v3.3.1
@@ -12,7 +16,7 @@ services:
     restart: unless-stopped
 
   promtail:
-    image: grafana/promtail:2.9.2
+    image: grafana/promtail:3.0.0
     container_name: promtail
     volumes:
       - ./promtail:/etc/promtail
@@ -22,7 +26,7 @@ services:
       - "-config.file=/etc/promtail/config.yml"
 
   loki:
-    image: grafana/loki:2.9.2
+    image: grafana/loki:3.0.0
     container_name: loki
     ports:
       - "3100:3100"
@@ -31,10 +35,12 @@ services:
 
 
   grafana:
-    image: grafana/grafana:10.4.1
+    image: grafana/grafana:10.4.2
     container_name: grafana
     ports:
       - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_NAME=Org
