@@ -2,6 +2,7 @@ name: 'book-store-application'
 
 volumes:
   grafana_data:
+  tempo_data:
 
 services:
   prometheus:
@@ -45,3 +46,15 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_NAME=Org
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+  # used for tracing
+  tempo:
+    image: grafana/tempo:main-814c1c6
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./tempo:/etc/tempo:ro
+      - tempo_data:/tmp/tempo
+    ports:
+      - "14250:14250"  # otlp-grpc
+      - "9411:9411"    # zipkin
